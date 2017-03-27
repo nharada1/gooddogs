@@ -52,12 +52,12 @@
                 // FileList object of File objects
                 var files = event.dataTransfer.files;
                 var dropZone = document.getElementById('drop_zone');
+                console.log(event);
                 if (files.length == 1) {
                     var reader = new FileReader();
                     // closure to capture file info
                     reader.onload = (function(file) {
                         return function(e) {
-                            console.log(e);
                             var dataUri = e.target.result,
                                 base64 = dataUri.substr(dataUri.indexOf(',') + 1),
                                 textarea, image, figcaption;
@@ -87,11 +87,11 @@
                             }
                         };
                     })(files[0]);
+                    reader.readAsDataURL(files[0]);
                 }
                 else {
-                    dropZone.innerHTML = '<div class=\'err\'>Only one image!</div>';
+                    dropZone.innerHTML = '<div class=\'err\'>Couldn\'t read image!</div>';
                 }
-                reader.readAsDataURL(files[0]);
             };
             var highlightDropZone = function (e) {
                 e.stopPropagation();
@@ -108,7 +108,7 @@
                 dropZone.addEventListener('dragover', highlightDropZone, false);
                 dropZone.addEventListener('dragenter', highlightDropZone, false);
                 dropZone.addEventListener('dragleave', removeDropZoneClass, false);
-                dropZone.innerHTML = 'Drag and drop dogs here';
+                dropZone.innerHTML = 'Drag and drop dogs from your computer to here';
             } else {
                 dropZone.innerHTML = 'The File APIs are not fully supported in this browser.';
                 dropZone.className = 'highlight';
